@@ -4,8 +4,8 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from web3 import Web3
-from models import CommanderProfile
-from schemas import NodeUpgradeRequest, AdsgramRewardRequest, WalletRegisterRequest
+from backend.models import CommanderProfile
+from backend.schemas import NodeUpgradeRequest, AdsgramRewardRequest, WalletRegisterRequest
 
 app = FastAPI(title="Continuum: L2 Cyber Wars API", version="1.0.0")
 
