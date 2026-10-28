@@ -2,6 +2,7 @@ import os
 import json
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from web3 import Web3
 from backend.models import CommanderProfile
@@ -37,9 +38,22 @@ def save_db(data):
     except Exception as e:
         print(f"Veritabanı kayıt hatası: {e}")
 
-@app.get("/")
-def read_root():
-    return {"status": "online", "game": "Continuum: L2 Cyber Wars API Active!"}
+@app.get("/", response_class=HTMLResponse)
+def serve_frontend():
+    """Kök dizine girildiğinde doğrudan Cyberpunk Mini App arayüzünü açar."""
+    # Render'daki dosya konumuna göre frontend/index.html yolunu buluyoruz
+    possible_paths = [
+        os.path.join("frontend", "index.html"),
+        os.path.join(os.path.dirname(__file__), "..", "frontend", "index.html"),
+        "index.html"
+    ]
+    
+    for path in possible_paths:
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+                
+    return "<h1>Cyberpunk UI index.html bulunamadı! Lütfen frontend/ klasörünü kontrol edin.</h1>"
 
 @app.get("/api/commander-info")
 def get_commander(user_id: str):
