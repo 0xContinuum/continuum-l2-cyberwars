@@ -1,10 +1,11 @@
 import os
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from web3 import Web3
-from models import CommanderProfile, NodeUpgradeRequest, AdsgramRewardRequest
+from models import CommanderProfile
+from schemas import NodeUpgradeRequest, AdsgramRewardRequest, WalletRegisterRequest
 
 app = FastAPI(title="Continuum: L2 Cyber Wars API", version="1.0.0")
 
@@ -46,7 +47,6 @@ def get_commander(user_id: str):
     commanders = db.setdefault("commanders", {})
     
     if user_id not in commanders:
-        # Yeni Komutan Profili Oluştur
         new_commander = CommanderProfile(
             user_id=user_id,
             username=f"Commander_{user_id[-4:]}",
@@ -84,7 +84,6 @@ def upgrade_node(req: NodeUpgradeRequest):
 
 @app.post("/api/adsgram-reward")
 def claim_adsgram_reward(req: AdsgramRewardRequest):
-    """Adsgram reklamı izlendiğinde çağrılan stratejik hızlandırma kancası (Kumar/Şans yok, tamamen buff/hızlandırma)."""
     db = load_db()
     commanders = db.get("commanders", {})
     
@@ -95,11 +94,9 @@ def claim_adsgram_reward(req: AdsgramRewardRequest):
     now = datetime.utcnow().timestamp()
     
     if req.reward_type == 'shield':
-        # 2 Saatlik Siber Kalkan Aktifleştirme
         cmd["shield_active_until"] = now + 7200
         msg = "🛡️ 2 Saatlik Siber Kalkan Aktif Edildi!"
     elif req.reward_type == 'boost':
-        # Anında +250 Puan Stratejik Kaynak
         cmd["points"] += 250
         msg = "⚡ Stratejik Kaynak Takviyesi: +250 PTS!"
     elif req.reward_type == 'gas_refill':
@@ -113,22 +110,19 @@ def claim_adsgram_reward(req: AdsgramRewardRequest):
     return {"success": True, "message": msg, "commander": cmd}
 
 @app.post("/api/register-wallet")
-def register_wallet(data: dict):
-    user_id = str(data.get("user_id"))
-    wallet_address = data.get("wallet_address")
-    username = data.get("username", "CyberCommander")
-    
-    if not wallet_address or not Web3.is_address(wallet_address):
+def register_wallet(data: WalletRegisterRequest):
+    if not data.wallet_address or not Web3.is_address(data.wallet_address):
         raise HTTPException(status_code=400, detail="Geçersiz cüzdan adresi.")
     
     db = load_db()
     commanders = db.setdefault("commanders", {})
     
+    user_id = str(data.user_id)
     if user_id not in commanders:
-        commanders[user_id] = CommanderProfile(user_id=user_id, username=username).dict()
+        commanders[user_id] = CommanderProfile(user_id=user_id, username=data.username).dict()
     
-    commanders[user_id]["wallet_address"] = Web3.to_checksum_address(wallet_address)
-    commanders[user_id]["username"] = username
+    commanders[user_id]["wallet_address"] = Web3.to_checksum_address(data.wallet_address)
+    commanders[user_id]["username"] = data.username
     save_db(db)
     
     return {"success": True, "message": "Cüzdan başarıyla eşlendi."}
