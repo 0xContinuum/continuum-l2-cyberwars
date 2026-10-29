@@ -4,9 +4,11 @@ import time
 import threading
 import requests
 from datetime import datetime
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from web3 import Web3
 from backend.models import CommanderProfile
 from backend.schemas import (
@@ -14,7 +16,7 @@ from backend.schemas import (
     SendMessageRequest, PayoutClaimRequest, CreateClanRequest
 )
 
-app = FastAPI(title="Continuum: L2 Cyber Wars API", version="2.2.0")
+app = FastAPI(title="Continuum: L2 Cyber Wars API", version="2.3.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,6 +25,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- STATİK GÖRSEL SERVİSİ (assets/bg.png ve assets/badge.png için) ---
+if os.path.exists("assets"):
+    app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
 DB_FILE = "cyberwars_database.json"
 BASE_SEPOLIA_RPC = "https://sepolia.base.org"
@@ -169,28 +175,28 @@ def register_wallet(data: WalletRegisterRequest):
     save_db(db)
     return {"success": True, "message": "Cüzdan başarıyla eşlendi."}
 
-# --- LİDERLİK TABLOSU (LEADERBOARD) ---
+# --- LİDERLİK TABLOSU (GİZLİLİK KORUMALI: Dolar/USDT yok, Clan PTS var) ---
 @app.get("/api/leaderboard")
 def get_leaderboard():
     db = load_db()
     commanders = list(db.get("commanders", {}).values())
     clans = db.get("clans", {})
     
-    # Komutanları puanlarına göre sırala (En yüksek ilk)
     sorted_commanders = sorted(commanders, key=lambda x: x.get("points", 0), reverse=True)[:20]
     
-    # Klanları toplam reklam/gelir havuzuna göre sırala
     clan_list = []
     for c_id, c_data in clans.items():
         member_count = sum(1 for cmd in commanders if cmd.get("clan_id") == c_id)
+        # Reklam başına 500 Klan Puanı hesaplanır (USDT Gizlendi!)
+        clan_pts = c_data["total_ads"] * 500 + (member_count * 150)
         clan_list.append({
             "clan_id": c_id,
             "name": c_data["name"],
             "member_count": member_count,
             "total_ads": c_data["total_ads"],
-            "revenue_pool": round(c_data["revenue_pool"], 2)
+            "clan_points": clan_pts
         })
-    sorted_clans = sorted(clan_list, key=lambda x: x["total_ads"], reverse=True)
+    sorted_clans = sorted(clan_list, key=lambda x: x["clan_points"], reverse=True)
     
     return {
         "success": True,
@@ -228,7 +234,6 @@ def get_partner_stats(partner_username: str):
     db = load_db()
     clans = db.get("clans", {})
     
-    # Eğer sorgulayan kişi Süper Admin (suvarialgo) ise tüm klanların özetini dönelim
     if partner_username.lower() == "suvarialgo":
         all_clans_summary = []
         for c_id, c_data in clans.items():
