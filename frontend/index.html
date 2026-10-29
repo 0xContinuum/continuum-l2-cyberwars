@@ -16,21 +16,22 @@
             --accent-cyan: #06b6d4;
         }
         body {
-            /* Ürettiğin muazzam siberpunk arkaplan görseli */
-            background: linear-gradient(rgba(6, 9, 19, 0.8), rgba(6, 9, 19, 0.95)), url('assets/bg.png');
+            /* Arka plan görseli entegre edildi */
+            background: linear-gradient(rgba(6, 9, 19, 0.85), rgba(6, 9, 19, 0.95)), url('/assets/bg.png'), url('assets/bg.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            background-color: #060913;
             color: #f8fafc;
             min-height: 100vh;
-            padding-bottom: 85px;
+            padding-bottom: 100px;
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
         .cyber-card {
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.75), inset 0 0 15px rgba(139, 92, 246, 0.12);
             border-radius: 20px;
         }
         .cyber-btn {
@@ -45,13 +46,13 @@
 </head>
 <body class="p-4 flex flex-col items-center">
 
-    <div class="w-full max-w-md flex flex-col gap-4">
+    <div class="w-full max-w-md flex flex-col gap-4 pb-12">
         
         <!-- HEADER -->
         <div class="cyber-card p-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <!-- Ürettiğin Klan/Rozet İkonu -->
-                <img src="assets/badge.png" alt="Badge" class="w-10 h-10 object-contain drop-shadow-[0_0_8px_#06b6d4]">
+                <!-- Rozet İkonu Entegre Edildi (Kırık resim kalmaması için fallback eklendi) -->
+                <img src="/assets/badge.png" onerror="this.onerror=null; this.src='assets/badge.png';" alt="Badge" class="w-10 h-10 object-contain drop-shadow-[0_0_8px_#06b6d4]">
                 <div>
                     <h2 class="text-xs font-bold text-slate-300" id="commanderName">Cyber Commander</h2>
                     <span class="text-[10px] text-cyan-400 font-mono" id="walletDisplay">Connecting L2...</span>
@@ -68,7 +69,7 @@
         <!-- ================= TAB 1: ÜSSÜMÜZ ================= -->
         <div id="tab-base" class="tab-content active">
             <div class="cyber-card p-5 text-center space-y-3">
-                <div class="text-[10px] text-cyan-400 font-extrabold tracking-widest uppercase" data-i18n="seqCenter">L2 SEQUENCER COMMAND CENTER</div>
+                <div class="text-[10px] text-cyan-400 font-extrabold tracking-widest uppercase" data-i18n="seqCenter">L2 SEQUENCER KOMUTA MERKEZİ</div>
                 <div class="text-3xl font-black text-white" id="sequencerLevelDisplay">Level 1</div>
                 <p class="text-xs text-slate-400" data-i18n="seqDesc">Blok işleme gücünü artır, saniyede daha fazla kaynak üret.</p>
                 
@@ -97,9 +98,7 @@
                     <button onclick="switchLeaderboardTab('commanders')" id="btnLbCmd" class="w-1/2 bg-purple-600 py-1.5 rounded-lg text-white font-bold">Komutanlar</button>
                     <button onclick="switchLeaderboardTab('clans')" id="btnLbClans" class="w-1/2 bg-slate-800 py-1.5 rounded-lg text-slate-400 font-bold">Klanlar</button>
                 </div>
-                <div id="leaderboardList" class="h-60 overflow-y-auto space-y-1.5 text-xs pr-1">
-                    <!-- Dinamik Sıralama Listesi -->
-                </div>
+                <div id="leaderboardList" class="h-64 overflow-y-auto space-y-1.5 text-xs pr-1"></div>
             </div>
         </div>
 
@@ -131,13 +130,12 @@
                 <button onclick="saveWalletAddress()" class="w-full cyber-btn text-white font-bold py-2.5 rounded-xl text-xs" data-i18n="btnSaveWallet">Cüzdanı Eşle & Kaydet</button>
             </div>
 
-            <!-- İş Ortağı Paneli -->
+            <!-- Normal İş Ortağı Paneli -->
             <div id="partnerDashboardCard" class="cyber-card p-4 space-y-3 border-indigo-500/40 hidden">
                 <div class="text-xs font-bold text-indigo-400 flex items-center justify-between">
                     <span>🤝 <span data-i18n="partnerTitle">İş Ortağı & Klan Paneli</span></span>
                     <span id="partnerClanName" class="text-[10px] bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">Clan</span>
                 </div>
-                
                 <div class="p-2.5 bg-slate-950/80 rounded-xl border border-indigo-500/30 space-y-1">
                     <div class="text-[10px] text-indigo-300 font-bold" data-i18n="inviteTitle">🔗 Klan Davet Linkiniz:</div>
                     <div class="flex gap-1">
@@ -145,7 +143,6 @@
                         <button onclick="copyInviteLink()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] px-3 py-1 rounded-lg font-bold" data-i18n="btnCopy">Kopyala</button>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-2 text-center">
                     <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
                         <div class="text-[10px] text-slate-400" data-i18n="pMembers">Klan Üyesi</div>
@@ -164,27 +161,24 @@
                 <button onclick="requestPartnerPayout()" id="payoutBtn" class="w-full bg-slate-800 text-slate-500 font-bold py-2.5 rounded-xl text-xs cursor-not-allowed" disabled data-i18n="btnPayout">Ödeme Talep Et</button>
             </div>
 
-            <!-- 👑 SÜPER ADMIN PANELİ (Sadece suvarialgo'ya görünür - Tüm Klanları Listeler) -->
-            <div id="adminPanelCard" class="cyber-card p-4 space-y-3 border-amber-500/50 hidden">
-                <div class="text-xs font-bold text-amber-400 flex items-center justify-between">
+            <!-- 👑 SÜPER ADMIN PANELİ (Ekrandan taşmaması için scroll ve marjin optimize edildi) -->
+            <div id="adminPanelCard" class="cyber-card p-4 space-y-3 border-amber-500/50 hidden mb-8">
+                <div class="text-xs font-bold text-amber-400 flex items-center justify-between border-b border-amber-500/20 pb-2">
                     <span>👑 Süper Admin Kontrol Merkezi</span>
-                    <span class="text-[9px] bg-amber-950 text-amber-300 px-2 py-0.5 rounded">Tüm Sistem</span>
+                    <span class="text-[9px] bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">Tüm Sistem</span>
                 </div>
                 
-                <!-- Tüm Klanlar Özeti -->
                 <div class="space-y-1.5">
-                    <div class="text-[10px] text-slate-400 font-bold">📊 Tüm Klanlar & Tahmini Gelirler:</div>
-                    <div id="adminAllClansBox" class="max-h-36 overflow-y-auto space-y-1 text-[11px] bg-slate-950/70 p-2 rounded-xl border border-amber-500/30">
-                        <!-- Dinamik klan listesi -->
-                    </div>
+                    <div class="text-[10px] text-slate-400 font-bold">📊 Tüm Klanlar & Gelir Havuzları:</div>
+                    <div id="adminAllClansBox" class="max-h-32 overflow-y-auto space-y-1.5 text-[11px] bg-slate-950/80 p-2 rounded-xl border border-amber-500/30"></div>
                 </div>
 
                 <div class="border-t border-slate-800 pt-2 space-y-2">
                     <div class="text-[10px] text-amber-300 font-bold">➕ Yeni Klan Ekle</div>
-                    <input id="adminClanName" type="text" placeholder="Klan Adı (Örn: CryptoTurk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
-                    <input id="adminClanId" type="text" placeholder="Klan ID (Örn: clan_cryptoturk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
-                    <input id="adminPartnerUsername" type="text" placeholder="Partner Kullanıcı Adı (Örn: ahmet)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
-                    <button onclick="createClanByAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs">Yeni Klan / Partner Ekle</button>
+                    <input id="adminClanName" type="text" placeholder="Klan Adı (Örn: CryptoTurk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <input id="adminClanId" type="text" placeholder="Klan ID (Örn: clan_cryptoturk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <input id="adminPartnerUsername" type="text" placeholder="Partner Kullanıcı Adı (Örn: ahmet)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <button onclick="createClanByAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition">Yeni Klan / Partner Ekle</button>
                 </div>
             </div>
         </div>
@@ -192,7 +186,7 @@
     </div>
 
     <!-- BOTTOM NAVIGATION -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-lg border-t border-purple-500/30 z-50 py-2 px-4">
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-lg border-t border-purple-500/30 z-50 py-2.5 px-4">
         <div class="max-w-md mx-auto flex justify-around items-center">
             <button onclick="switchTab('base')" id="nav-base" class="flex flex-col items-center text-cyan-400 transition"><span class="text-base">🏭</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navBase">Üssüm</span></button>
             <button onclick="switchTab('wars')" id="nav-wars" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">⚔️</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navWars">Liderlik</span></button>
@@ -228,14 +222,6 @@
                 chatHeader: "💬 Siber Terminal Sohbet",
                 vaultTitle: "Continuum On-Chain Vault",
                 btnSaveWallet: "Cüzdanı Eşle & Kaydet",
-                partnerTitle: "İş Ortağı & Klan Paneli",
-                inviteTitle: "🔗 Klan Davet Linkiniz:",
-                btnCopy: "Kopyala",
-                pMembers: "Klan Üyesi",
-                pAds: "Reklamlar",
-                pShare: "Tahmini %25 Hakediş Payınız",
-                pLimitNote: "⚠️ Minimum Ödeme Eşiği: 100 USDT",
-                btnPayout: "Ödeme Talep Et",
                 navBase: "Üssüm",
                 navWars: "Liderlik",
                 navChat: "Chat",
@@ -253,14 +239,6 @@
                 chatHeader: "💬 Cyber Terminal Chat",
                 vaultTitle: "Continuum On-Chain Vault",
                 btnSaveWallet: "Link & Save Wallet",
-                partnerTitle: "Partner & Clan Dashboard",
-                inviteTitle: "🔗 Clan Invite Link:",
-                btnCopy: "Copy",
-                pMembers: "Members",
-                pAds: "Ads",
-                pShare: "Estimated 25% Revenue Share",
-                pLimitNote: "⚠️ Minimum Payout: 100 USDT",
-                btnPayout: "Request Payout",
                 navBase: "Base",
                 navWars: "Leaderboard",
                 navChat: "Chat",
@@ -320,15 +298,15 @@
             } catch (e) { console.error(e); }
         }
 
-        // --- PARTNER & SÜPER ADMIN İSTATİSTİKLERİ ---
         async function loadPartnerStats() {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/partner-stats?partner_username=${username}`);
                 const data = await res.json();
                 if (data.success) {
                     if (data.is_super_admin) {
-                        // Süper Admin (suvarialgo) için tüm klanları listele
+                        document.getElementById('partnerDashboardCard').classList.add('hidden');
                         document.getElementById('adminPanelCard').classList.remove('hidden');
+                        
                         const adminBox = document.getElementById('adminAllClansBox');
                         adminBox.innerHTML = data.all_clans.map(c => `
                             <div class="bg-slate-900 p-2 rounded-lg border border-amber-500/20 flex justify-between items-center">
@@ -343,7 +321,7 @@
                             </div>
                         `).join('');
                     } else {
-                        // Normal partner paneli
+                        document.getElementById('adminPanelCard').classList.add('hidden');
                         document.getElementById('partnerDashboardCard').classList.remove('hidden');
                         document.getElementById('partnerClanName').innerText = data.clan_name;
                         document.getElementById('partnerMembersCount').innerText = data.member_count;
@@ -366,7 +344,7 @@
             } catch (e) { console.log("Partner/Admin yetkisi yok."); }
         }
 
-        // --- LİDERLİK TABLOSU YÜKLEME ---
+        // --- LİDERLİK TABLOSU (Klan Puanları Gösterilir, USDT Gizlendi) ---
         async function loadLeaderboard() {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/leaderboard`);
@@ -396,8 +374,8 @@
                                         <div class="text-[9px] text-slate-400">Üye: ${cl.member_count} | Reklam: ${cl.total_ads}</div>
                                     </div>
                                 </div>
-                                <div class="text-right text-emerald-400 font-bold text-xs">
-                                    ${cl.revenue_pool} USDT
+                                <div class="text-right text-purple-300 font-extrabold text-xs">
+                                    ⚡ ${cl.clan_points} PTS
                                 </div>
                             </div>
                         `).join('');
@@ -411,14 +389,6 @@
             document.getElementById('btnLbCmd').className = tab === 'commanders' ? "w-1/2 bg-purple-600 py-1.5 rounded-lg text-white font-bold" : "w-1/2 bg-slate-800 py-1.5 rounded-lg text-slate-400 font-bold";
             document.getElementById('btnLbClans').className = tab === 'clans' ? "w-1/2 bg-purple-600 py-1.5 rounded-lg text-white font-bold" : "w-1/2 bg-slate-800 py-1.5 rounded-lg text-slate-400 font-bold";
             loadLeaderboard();
-        }
-
-        function copyInviteLink() {
-            const input = document.getElementById('inviteLinkInput');
-            input.select();
-            input.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(input.value);
-            alert(currentLang === 'tr' ? "✅ Klan davet linki kopyalandı!" : "✅ Invite link copied!");
         }
 
         async function createClanByAdmin() {
@@ -443,24 +413,6 @@
                     loadPartnerStats();
                 } else { alert(`⚠️ ${data.detail}`); }
             } catch (e) { alert("Klan oluşturma hatası"); }
-        }
-
-        async function requestPartnerPayout() {
-            const addr = document.getElementById('walletInput').value.trim();
-            if (!addr) {
-                alert("⚠️ Önce cüzdan adresinizi eşlemelisiniz!");
-                return;
-            }
-            try {
-                const res = await fetch(`${API_BASE_URL}/api/request-payout`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ partner_username: username, clan_id: "clan_teknohaber", wallet_address: addr, amount: 100 })
-                });
-                const data = await res.json();
-                if (res.ok) alert(data.message);
-                else alert(`⚠️ ${data.detail}`);
-            } catch (e) { alert("Talep hatası"); }
         }
 
         function switchChatChannel(chan) {
