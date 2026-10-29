@@ -11,25 +11,26 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-color: #060913;
-            --card-bg: rgba(15, 23, 42, 0.85);
             --primary: #8b5cf6;
             --primary-glow: rgba(139, 92, 246, 0.4);
             --accent-cyan: #06b6d4;
-            --cyan-glow: rgba(6, 182, 212, 0.4);
         }
         body {
-            background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-color) 100%);
+            /* Ürettiğin muazzam siberpunk arkaplan görseli */
+            background: linear-gradient(rgba(6, 9, 19, 0.8), rgba(6, 9, 19, 0.95)), url('assets/bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: #f8fafc;
             min-height: 100vh;
             padding-bottom: 85px;
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
         .cyber-card {
-            background: var(--card-bg);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(139, 92, 246, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(139, 92, 246, 0.1);
             border-radius: 20px;
         }
         .cyber-btn {
@@ -48,8 +49,9 @@
         
         <!-- HEADER -->
         <div class="cyber-card p-4 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+            <div class="flex items-center gap-3">
+                <!-- Ürettiğin Klan/Rozet İkonu -->
+                <img src="assets/badge.png" alt="Badge" class="w-10 h-10 object-contain drop-shadow-[0_0_8px_#06b6d4]">
                 <div>
                     <h2 class="text-xs font-bold text-slate-300" id="commanderName">Cyber Commander</h2>
                     <span class="text-[10px] text-cyan-400 font-mono" id="walletDisplay">Connecting L2...</span>
@@ -68,7 +70,7 @@
             <div class="cyber-card p-5 text-center space-y-3">
                 <div class="text-[10px] text-cyan-400 font-extrabold tracking-widest uppercase" data-i18n="seqCenter">L2 SEQUENCER COMMAND CENTER</div>
                 <div class="text-3xl font-black text-white" id="sequencerLevelDisplay">Level 1</div>
-                <p class="text-xs text-slate-400" data-i18n="seqDesc">Blok işleme gücünü artır, saniyede daha fazla $CTM tabanlı kaynak üret.</p>
+                <p class="text-xs text-slate-400" data-i18n="seqDesc">Blok işleme gücünü artır, saniyede daha fazla kaynak üret.</p>
                 
                 <div class="grid grid-cols-2 gap-2 pt-2">
                     <button onclick="upgradeNode('sequencer')" class="cyber-btn text-white font-bold py-3 px-4 rounded-xl text-xs" data-i18n="btnSeq">🚀 Sequencer (500 PTS)</button>
@@ -87,12 +89,17 @@
             </div>
         </div>
 
-        <!-- ================= TAB 2: SİBER SAVAŞ ================= -->
+        <!-- ================= TAB 2: LİDERLİK & SİBER SAVAŞ ================= -->
         <div id="tab-wars" class="tab-content">
-            <div class="cyber-card p-5 text-center space-y-3">
-                <div class="text-xs font-bold text-purple-400" data-i18n="warsTitle">⚔️ L2 NODE RAIDS & HACKING</div>
-                <p class="text-xs text-slate-300" data-i18n="warsDesc">Rakip düğümlere siber saldırı düzenleyerek işlenmemiş blokları ele geçir!</p>
-                <button onclick="launchRaid()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs" data-i18n="btnRaid">⚡ Siber Saldırı Başlat</button>
+            <div class="cyber-card p-4 space-y-3">
+                <div class="text-xs font-bold text-purple-400 text-center" data-i18n="warsTitle">⚔️ L2 LEADERBOARD & RAIDS</div>
+                <div class="flex gap-1 text-[10px]">
+                    <button onclick="switchLeaderboardTab('commanders')" id="btnLbCmd" class="w-1/2 bg-purple-600 py-1.5 rounded-lg text-white font-bold">Komutanlar</button>
+                    <button onclick="switchLeaderboardTab('clans')" id="btnLbClans" class="w-1/2 bg-slate-800 py-1.5 rounded-lg text-slate-400 font-bold">Klanlar</button>
+                </div>
+                <div id="leaderboardList" class="h-60 overflow-y-auto space-y-1.5 text-xs pr-1">
+                    <!-- Dinamik Sıralama Listesi -->
+                </div>
             </div>
         </div>
 
@@ -114,7 +121,7 @@
             </div>
         </div>
 
-        <!-- ================= TAB 4: PARTNER & CÜZDAN ================= -->
+        <!-- ================= TAB 4: PARTNER & CÜZDAN & SÜPER ADMIN ================= -->
         <div id="tab-partner" class="tab-content">
             <div class="cyber-card p-4 space-y-3">
                 <div class="text-xs font-bold text-amber-400 flex items-center gap-2">
@@ -131,7 +138,6 @@
                     <span id="partnerClanName" class="text-[10px] bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">Clan</span>
                 </div>
                 
-                <!-- ÖZEL DAVET LİNKİ PAYLAŞIM ALANI -->
                 <div class="p-2.5 bg-slate-950/80 rounded-xl border border-indigo-500/30 space-y-1">
                     <div class="text-[10px] text-indigo-300 font-bold" data-i18n="inviteTitle">🔗 Klan Davet Linkiniz:</div>
                     <div class="flex gap-1">
@@ -158,13 +164,26 @@
                 <button onclick="requestPartnerPayout()" id="payoutBtn" class="w-full bg-slate-800 text-slate-500 font-bold py-2.5 rounded-xl text-xs cursor-not-allowed" disabled data-i18n="btnPayout">Ödeme Talep Et</button>
             </div>
 
-            <!-- ⚡ SÜPER ADMIN PANELİ (Sadece Sana Görünür: suvarialgo) -->
+            <!-- 👑 SÜPER ADMIN PANELİ (Sadece suvarialgo'ya görünür - Tüm Klanları Listeler) -->
             <div id="adminPanelCard" class="cyber-card p-4 space-y-3 border-amber-500/50 hidden">
-                <div class="text-xs font-bold text-amber-400">👑 Süper Admin & Klan Oluşturucu</div>
-                <div class="space-y-2">
+                <div class="text-xs font-bold text-amber-400 flex items-center justify-between">
+                    <span>👑 Süper Admin Kontrol Merkezi</span>
+                    <span class="text-[9px] bg-amber-950 text-amber-300 px-2 py-0.5 rounded">Tüm Sistem</span>
+                </div>
+                
+                <!-- Tüm Klanlar Özeti -->
+                <div class="space-y-1.5">
+                    <div class="text-[10px] text-slate-400 font-bold">📊 Tüm Klanlar & Tahmini Gelirler:</div>
+                    <div id="adminAllClansBox" class="max-h-36 overflow-y-auto space-y-1 text-[11px] bg-slate-950/70 p-2 rounded-xl border border-amber-500/30">
+                        <!-- Dinamik klan listesi -->
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800 pt-2 space-y-2">
+                    <div class="text-[10px] text-amber-300 font-bold">➕ Yeni Klan Ekle</div>
                     <input id="adminClanName" type="text" placeholder="Klan Adı (Örn: CryptoTurk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
                     <input id="adminClanId" type="text" placeholder="Klan ID (Örn: clan_cryptoturk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
-                    <input id="adminPartnerUsername" type="text" placeholder="Partner Telegram Kullanıcı Adı (Örn: ahmet)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                    <input id="adminPartnerUsername" type="text" placeholder="Partner Kullanıcı Adı (Örn: ahmet)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
                     <button onclick="createClanByAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs">Yeni Klan / Partner Ekle</button>
                 </div>
             </div>
@@ -176,9 +195,9 @@
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-lg border-t border-purple-500/30 z-50 py-2 px-4">
         <div class="max-w-md mx-auto flex justify-around items-center">
             <button onclick="switchTab('base')" id="nav-base" class="flex flex-col items-center text-cyan-400 transition"><span class="text-base">🏭</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navBase">Üssüm</span></button>
-            <button onclick="switchTab('wars')" id="nav-wars" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">⚔️</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navWars">Siber Savaş</span></button>
+            <button onclick="switchTab('wars')" id="nav-wars" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">⚔️</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navWars">Liderlik</span></button>
             <button onclick="switchTab('chat')" id="nav-chat" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">💬</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navChat">Chat</span></button>
-            <button onclick="switchTab('partner')" id="nav-partner" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">🤝</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navPartner">Partner & Cüzdan</span></button>
+            <button onclick="switchTab('partner')" id="nav-partner" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">🤝</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navPartner">Partner & Admin</span></button>
         </div>
     </nav>
 
@@ -190,10 +209,11 @@
 
         const tgUser = tg?.initDataUnsafe?.user;
         const userId = tgUser?.id ? String(tgUser.id) : "cyber_guest_99";
-        const username = tgUser?.username || tgUser?.first_name || "suvarialgo"; // Test için varsayılan admin
+        const username = tgUser?.username || tgUser?.first_name || "suvarialgo"; 
         
         let currentLang = tgUser?.language_code === 'en' ? 'en' : 'tr';
         let activeChatChannel = "global";
+        let activeLbTab = "commanders";
 
         const i18n = {
             tr: {
@@ -204,9 +224,7 @@
                 boostTitle: "Stratejik Reklam Hızlandırıcıları (Adsgram)",
                 btnShield: "🛡️ 2 Saat Kalkan",
                 btnFaucet: "💎 +2.5 $CTM Faucet",
-                warsTitle: "⚔️ L2 NODE RAIDS & HACKING",
-                warsDesc: "Rakip düğümlere siber saldırı düzenle!",
-                btnRaid: "⚡ Siber Saldırı Başlat",
+                warsTitle: "⚔️ L2 LEADERBOARD & RAIDS",
                 chatHeader: "💬 Siber Terminal Sohbet",
                 vaultTitle: "Continuum On-Chain Vault",
                 btnSaveWallet: "Cüzdanı Eşle & Kaydet",
@@ -219,9 +237,9 @@
                 pLimitNote: "⚠️ Minimum Ödeme Eşiği: 100 USDT",
                 btnPayout: "Ödeme Talep Et",
                 navBase: "Üssüm",
-                navWars: "Siber Savaş",
+                navWars: "Liderlik",
                 navChat: "Chat",
-                navPartner: "Partner & Cüzdan"
+                navPartner: "Partner & Admin"
             },
             en: {
                 seqCenter: "L2 SEQUENCER COMMAND CENTER",
@@ -231,9 +249,7 @@
                 boostTitle: "Strategic Ad Boosters (Adsgram)",
                 btnShield: "🛡️ 2H Shield",
                 btnFaucet: "💎 +2.5 $CTM Faucet",
-                warsTitle: "⚔️ L2 NODE RAIDS & HACKING",
-                warsDesc: "Cyber-attack rival nodes!",
-                btnRaid: "⚡ Launch Raid",
+                warsTitle: "⚔️ L2 LEADERBOARD & RAIDS",
                 chatHeader: "💬 Cyber Terminal Chat",
                 vaultTitle: "Continuum On-Chain Vault",
                 btnSaveWallet: "Link & Save Wallet",
@@ -246,9 +262,9 @@
                 pLimitNote: "⚠️ Minimum Payout: 100 USDT",
                 btnPayout: "Request Payout",
                 navBase: "Base",
-                navWars: "Wars",
+                navWars: "Leaderboard",
                 navChat: "Chat",
-                navPartner: "Partner & Vault"
+                navPartner: "Partner & Admin"
             }
         };
 
@@ -270,13 +286,9 @@
             updateLanguageUI();
             loadCommanderInfo();
             loadPartnerStats();
+            loadLeaderboard();
             loadChatMessages();
             setInterval(loadChatMessages, 5000);
-            
-            // Eğer admin seninsen admin panelini aç
-            if (username.toLowerCase() === "suvarialgo") {
-                document.getElementById('adminPanelCard').classList.remove('hidden');
-            }
         });
 
         function switchTab(tabName) {
@@ -308,30 +320,97 @@
             } catch (e) { console.error(e); }
         }
 
+        // --- PARTNER & SÜPER ADMIN İSTATİSTİKLERİ ---
         async function loadPartnerStats() {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/partner-stats?partner_username=${username}`);
                 const data = await res.json();
                 if (data.success) {
-                    document.getElementById('partnerDashboardCard').classList.remove('hidden');
-                    document.getElementById('partnerClanName').innerText = data.clan_name;
-                    document.getElementById('partnerMembersCount').innerText = data.member_count;
-                    document.getElementById('partnerTotalAds').innerText = data.total_ads;
-                    document.getElementById('partnerShareDisplay').innerText = `${data.partner_share} USDT`;
-                    document.getElementById('inviteLinkInput').value = data.invite_link;
-                    
-                    const payoutBtn = document.getElementById('payoutBtn');
-                    if (data.payout_eligible) {
-                        payoutBtn.className = "w-full cyber-btn text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer";
-                        payoutBtn.removeAttribute('disabled');
-                        payoutBtn.innerText = currentLang === 'tr' ? "💰 Ödeme Talep Et (100 USDT Aşıldı)" : "💰 Request Payout";
+                    if (data.is_super_admin) {
+                        // Süper Admin (suvarialgo) için tüm klanları listele
+                        document.getElementById('adminPanelCard').classList.remove('hidden');
+                        const adminBox = document.getElementById('adminAllClansBox');
+                        adminBox.innerHTML = data.all_clans.map(c => `
+                            <div class="bg-slate-900 p-2 rounded-lg border border-amber-500/20 flex justify-between items-center">
+                                <div>
+                                    <div class="text-white font-bold">${c.name} <span class="text-cyan-400 text-[9px]">(@${c.partner})</span></div>
+                                    <div class="text-slate-400 text-[10px]">Üye: ${c.member_count} | Reklam: ${c.total_ads}</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-emerald-400 font-bold">${c.revenue_pool} USDT</div>
+                                    <div class="text-[9px] text-purple-300">Pay: ${(c.revenue_pool * 0.25).toFixed(2)} USDT</div>
+                                </div>
+                            </div>
+                        `).join('');
                     } else {
-                        payoutBtn.className = "w-full bg-slate-800 text-slate-500 font-bold py-2.5 rounded-xl text-xs cursor-not-allowed";
-                        payoutBtn.setAttribute('disabled', 'true');
-                        payoutBtn.innerText = currentLang === 'tr' ? "Ödeme Talep Et (100 USDT Bekleniyor)" : "Waiting 100 USDT";
+                        // Normal partner paneli
+                        document.getElementById('partnerDashboardCard').classList.remove('hidden');
+                        document.getElementById('partnerClanName').innerText = data.clan_name;
+                        document.getElementById('partnerMembersCount').innerText = data.member_count;
+                        document.getElementById('partnerTotalAds').innerText = data.total_ads;
+                        document.getElementById('partnerShareDisplay').innerText = `${data.partner_share} USDT`;
+                        document.getElementById('inviteLinkInput').value = data.invite_link;
+                        
+                        const payoutBtn = document.getElementById('payoutBtn');
+                        if (data.payout_eligible) {
+                            payoutBtn.className = "w-full cyber-btn text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer";
+                            payoutBtn.removeAttribute('disabled');
+                            payoutBtn.innerText = currentLang === 'tr' ? "💰 Ödeme Talep Et (100 USDT Aşıldı)" : "💰 Request Payout";
+                        } else {
+                            payoutBtn.className = "w-full bg-slate-800 text-slate-500 font-bold py-2.5 rounded-xl text-xs cursor-not-allowed";
+                            payoutBtn.setAttribute('disabled', 'true');
+                            payoutBtn.innerText = currentLang === 'tr' ? "Ödeme Talep Et (100 USDT Bekleniyor)" : "Waiting 100 USDT";
+                        }
                     }
                 }
-            } catch (e) { console.log("Partner yetkisi yok."); }
+            } catch (e) { console.log("Partner/Admin yetkisi yok."); }
+        }
+
+        // --- LİDERLİK TABLOSU YÜKLEME ---
+        async function loadLeaderboard() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/leaderboard`);
+                const data = await res.json();
+                if (data.success) {
+                    const box = document.getElementById('leaderboardList');
+                    if (activeLbTab === 'commanders') {
+                        box.innerHTML = data.commanders.map((c, index) => `
+                            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-purple-500/20 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-black text-xs text-amber-400">#${index+1}</span>
+                                    <span class="text-white font-bold">@${c.username}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-purple-300 font-extrabold">${c.points} PTS</span>
+                                    <div class="text-[9px] text-cyan-400">Lvl ${c.level}</div>
+                                </div>
+                            </div>
+                        `).join('');
+                    } else {
+                        box.innerHTML = data.clans.map((cl, index) => `
+                            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-cyan-500/20 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-black text-xs text-cyan-400">#${index+1}</span>
+                                    <div>
+                                        <div class="text-white font-bold">${cl.name}</div>
+                                        <div class="text-[9px] text-slate-400">Üye: ${cl.member_count} | Reklam: ${cl.total_ads}</div>
+                                    </div>
+                                </div>
+                                <div class="text-right text-emerald-400 font-bold text-xs">
+                                    ${cl.revenue_pool} USDT
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function switchLeaderboardTab(tab) {
+            activeLbTab = tab;
+            document.getElementById('btnLbCmd').className = tab === 'commanders' ? "w-1/2 bg-purple-600 py-1.5 rounded-lg text-white font-bold" : "w-1/2 bg-slate-800 py-1.5 rounded-lg text-slate-400 font-bold";
+            document.getElementById('btnLbClans').className = tab === 'clans' ? "w-1/2 bg-purple-600 py-1.5 rounded-lg text-white font-bold" : "w-1/2 bg-slate-800 py-1.5 rounded-lg text-slate-400 font-bold";
+            loadLeaderboard();
         }
 
         function copyInviteLink() {
@@ -430,6 +509,7 @@
                     if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 60 });
                     alert(data.message);
                     loadCommanderInfo();
+                    loadLeaderboard();
                 } else { alert(`⚠️ ${data.detail}`); }
             } catch (e) { alert("Bağlantı hatası"); }
         }
@@ -455,6 +535,7 @@
                         alert(data.message);
                         loadCommanderInfo();
                         loadPartnerStats();
+                        loadLeaderboard();
                     }
                 }
             } catch (e) { alert("Reklam oynatılamadı veya iptal edildi."); }
@@ -475,12 +556,6 @@
                     loadCommanderInfo();
                 } else { alert(`⚠️ ${data.detail}`); }
             } catch (e) { alert("Cüzdan kayıt hatası"); }
-        }
-
-        function launchRaid() {
-            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-            alert("⚔️ Siber saldırı başlatıldı! 400 Puan kasaya eklendi.");
-            loadCommanderInfo();
         }
     </script>
 </body>
