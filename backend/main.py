@@ -14,7 +14,7 @@ from backend.schemas import (
     SendMessageRequest, PayoutClaimRequest, CreateClanRequest
 )
 
-app = FastAPI(title="Continuum: L2 Cyber Wars API", version="2.1.0")
+app = FastAPI(title="Continuum: L2 Cyber Wars API", version="2.2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,7 +28,6 @@ DB_FILE = "cyberwars_database.json"
 BASE_SEPOLIA_RPC = "https://sepolia.base.org"
 w3 = Web3(Web3.HTTPProvider(BASE_SEPOLIA_RPC))
 
-# --- KEEP-ALIVE PING MEKANİZMASI ---
 def self_ping():
     while True:
         try:
@@ -170,6 +169,35 @@ def register_wallet(data: WalletRegisterRequest):
     save_db(db)
     return {"success": True, "message": "Cüzdan başarıyla eşlendi."}
 
+# --- LİDERLİK TABLOSU (LEADERBOARD) ---
+@app.get("/api/leaderboard")
+def get_leaderboard():
+    db = load_db()
+    commanders = list(db.get("commanders", {}).values())
+    clans = db.get("clans", {})
+    
+    # Komutanları puanlarına göre sırala (En yüksek ilk)
+    sorted_commanders = sorted(commanders, key=lambda x: x.get("points", 0), reverse=True)[:20]
+    
+    # Klanları toplam reklam/gelir havuzuna göre sırala
+    clan_list = []
+    for c_id, c_data in clans.items():
+        member_count = sum(1 for cmd in commanders if cmd.get("clan_id") == c_id)
+        clan_list.append({
+            "clan_id": c_id,
+            "name": c_data["name"],
+            "member_count": member_count,
+            "total_ads": c_data["total_ads"],
+            "revenue_pool": round(c_data["revenue_pool"], 2)
+        })
+    sorted_clans = sorted(clan_list, key=lambda x: x["total_ads"], reverse=True)
+    
+    return {
+        "success": True,
+        "commanders": [{"username": c["username"], "points": c["points"], "level": c["sequencer_level"]} for c in sorted_commanders],
+        "clans": sorted_clans
+    }
+
 # --- CHAT ENDPOINTLERİ ---
 @app.get("/api/get-chats")
 def get_chats(channel: str = "global"):
@@ -194,12 +222,31 @@ def send_message(req: SendMessageRequest):
     save_db(db)
     return {"success": True}
 
-# --- PARTNER & ADMIN YÖNETİMİ ---
+# --- PARTNER & SÜPER ADMIN PANELİ ---
 @app.get("/api/partner-stats")
 def get_partner_stats(partner_username: str):
     db = load_db()
     clans = db.get("clans", {})
     
+    # Eğer sorgulayan kişi Süper Admin (suvarialgo) ise tüm klanların özetini dönelim
+    if partner_username.lower() == "suvarialgo":
+        all_clans_summary = []
+        for c_id, c_data in clans.items():
+            m_count = sum(1 for cmd in db.get("commanders", {}).values() if cmd.get("clan_id") == c_id)
+            all_clans_summary.append({
+                "clan_id": c_id,
+                "name": c_data["name"],
+                "partner": c_data["partner_username"],
+                "member_count": m_count,
+                "total_ads": c_data["total_ads"],
+                "revenue_pool": round(c_data["revenue_pool"], 2)
+            })
+        return {
+            "success": True,
+            "is_super_admin": True,
+            "all_clans": all_clans_summary
+        }
+
     target_clan = None
     target_clan_id = None
     for c_id, c_data in clans.items():
@@ -217,6 +264,7 @@ def get_partner_stats(partner_username: str):
     
     return {
         "success": True,
+        "is_super_admin": False,
         "clan_name": target_clan["name"],
         "clan_id": target_clan_id,
         "member_count": member_count,
@@ -229,13 +277,11 @@ def get_partner_stats(partner_username: str):
 
 @app.post("/api/admin/create-clan")
 def create_clan(req: CreateClanRequest):
-    # Sadece senin kullanıcı adın admin yetkisine sahip olur
     if req.admin_username.lower() != "suvarialgo":
         raise HTTPException(status_code=403, detail="Yetkisiz admin denemesi!")
     
     db = load_db()
     clans = db.setdefault("clans", {})
-    
     clans[req.clan_id] = {
         "name": req.clan_name,
         "partner_username": req.partner_username.replace("@", ""),
