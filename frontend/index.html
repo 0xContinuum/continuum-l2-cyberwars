@@ -56,7 +56,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <!-- DİL DEĞİŞTİRME TOGGLE -->
                 <button onclick="toggleLanguage()" id="langToggleBtn" class="bg-indigo-900/60 border border-indigo-500/50 px-2.5 py-1 rounded-xl text-[10px] font-bold text-indigo-200">TR</button>
                 <div class="bg-purple-900/40 border border-purple-500/40 px-3 py-1 rounded-xl text-xs font-extrabold text-purple-300">
                     ⚡ <span id="commanderPoints">0</span> PTS
@@ -64,58 +63,40 @@
             </div>
         </div>
 
-        <!-- ================= TAB 1: ÜSSÜMÜZ (BASE & TYCOON) ================= -->
+        <!-- ================= TAB 1: ÜSSÜMÜZ ================= -->
         <div id="tab-base" class="tab-content active">
             <div class="cyber-card p-5 text-center space-y-3">
                 <div class="text-[10px] text-cyan-400 font-extrabold tracking-widest uppercase" data-i18n="seqCenter">L2 SEQUENCER COMMAND CENTER</div>
                 <div class="text-3xl font-black text-white" id="sequencerLevelDisplay">Level 1</div>
-                <p class="text-xs text-slate-400" data-i18n="seqDesc">Blok işleme gücünü artır, saniyede daha fazla $CTM tabanlı kaynak üret ve üssünü güçlendir.</p>
+                <p class="text-xs text-slate-400" data-i18n="seqDesc">Blok işleme gücünü artır, saniyede daha fazla $CTM tabanlı kaynak üret.</p>
                 
                 <div class="grid grid-cols-2 gap-2 pt-2">
-                    <button onclick="upgradeNode('sequencer')" class="cyber-btn text-white font-bold py-3 px-4 rounded-xl text-xs" data-i18n="btnSeq">
-                        🚀 Sequencer Yükselt (500 PTS)
-                    </button>
-                    <button onclick="upgradeNode('paymaster')" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/40 text-cyan-300 font-bold py-3 px-4 rounded-xl text-xs" data-i18n="btnPay">
-                        ⛽ Paymaster Kasa (500 PTS)
-                    </button>
+                    <button onclick="upgradeNode('sequencer')" class="cyber-btn text-white font-bold py-3 px-4 rounded-xl text-xs" data-i18n="btnSeq">🚀 Sequencer (500 PTS)</button>
+                    <button onclick="upgradeNode('paymaster')" class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/40 text-cyan-300 font-bold py-3 px-4 rounded-xl text-xs" data-i18n="btnPay">⛽ Paymaster (500 PTS)</button>
                 </div>
             </div>
 
-            <!-- ADSGRAM HIZLANDIRMA & FAUCET -->
             <div class="cyber-card p-4 space-y-3 border-cyan-500/30">
                 <div class="text-xs font-bold text-cyan-400 flex items-center gap-2">
                     <span>📺</span> <span data-i18n="boostTitle">Stratejik Reklam Hızlandırıcıları (Adsgram Boost)</span>
                 </div>
-                <p class="text-[11px] text-slate-300" data-i18n="boostDesc">Üssünü saldırılardan korumak veya anında kaynak takviyesi almak için siber reklam protokolünü çalıştır:</p>
-                
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="watchAdsgramReward('shield')" class="bg-cyan-950/60 hover:bg-cyan-900/50 border border-cyan-500/40 text-cyan-300 font-bold py-2.5 px-3 rounded-xl text-[11px] transition" data-i18n="btnShield">
-                        🛡️ 2 Saatlik Siber Kalkan
-                    </button>
-                    <button onclick="watchAdsgramReward('faucet_ad')" class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold py-2.5 px-3 rounded-xl text-[11px] transition" data-i18n="btnFaucet">
-                        💎 Reklam ile +2.5 $CTM Faucet
-                    </button>
+                    <button onclick="watchAdsgramReward('shield')" class="bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-bold py-2.5 px-3 rounded-xl text-[11px]" data-i18n="btnShield">🛡️ 2 Saat Kalkan</button>
+                    <button onclick="watchAdsgramReward('faucet_ad')" class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold py-2.5 px-3 rounded-xl text-[11px]" data-i18n="btnFaucet">💎 +2.5 $CTM Faucet</button>
                 </div>
             </div>
         </div>
 
-        <!-- ================= TAB 2: SİBER SAVAŞ (RAIDS) ================= -->
+        <!-- ================= TAB 2: SİBER SAVAŞ ================= -->
         <div id="tab-wars" class="tab-content">
             <div class="cyber-card p-5 text-center space-y-3">
                 <div class="text-xs font-bold text-purple-400" data-i18n="warsTitle">⚔️ L2 NODE RAIDS & HACKING</div>
-                <p class="text-xs text-slate-300" data-i18n="warsDesc">Rakip düğümlere (Node) siber saldırı düzenleyerek işlenmemiş blokları ele geçir ve liderlik tablosunda tırman!</p>
-                
-                <div class="p-4 bg-slate-950/80 rounded-xl border border-slate-800 space-y-2">
-                    <div class="text-xs font-bold text-amber-400" data-i18n="targetNode">🎯 Hedef: Sector-7 Validator Node</div>
-                    <div class="text-[11px] text-slate-400" data-i18n="targetInfo">Savunma Gücü: Normal | Ödül: +400 Puan</div>
-                    <button onclick="launchRaid()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition" data-i18n="btnRaid">
-                        ⚡ Siber Saldırı Başlat (Raid)
-                    </button>
-                </div>
+                <p class="text-xs text-slate-300" data-i18n="warsDesc">Rakip düğümlere siber saldırı düzenleyerek işlenmemiş blokları ele geçir!</p>
+                <button onclick="launchRaid()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs" data-i18n="btnRaid">⚡ Siber Saldırı Başlat</button>
             </div>
         </div>
 
-        <!-- ================= TAB 3: CHAT TERMİNALİ (GLOBAL & CLAN) ================= -->
+        <!-- ================= TAB 3: CHAT ================= -->
         <div id="tab-chat" class="tab-content">
             <div class="cyber-card p-4 space-y-3">
                 <div class="flex justify-between items-center">
@@ -125,43 +106,47 @@
                         <button onclick="switchChatChannel('clan')" id="btnChatClan" class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-400 font-bold">Clan</button>
                     </div>
                 </div>
-                <div id="chatMessagesBox" class="h-44 overflow-y-auto bg-slate-950/70 border border-indigo-900/40 p-2.5 rounded-xl text-[11px] space-y-2">
-                    <!-- Dinamik chat mesajları buraya gelecek -->
-                </div>
+                <div id="chatMessagesBox" class="h-44 overflow-y-auto bg-slate-950/70 border border-indigo-900/40 p-2.5 rounded-xl text-[11px] space-y-2"></div>
                 <div class="flex gap-2">
-                    <input id="chatInput" type="text" placeholder="Komut veya mesaj yazın..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                    <input id="chatInput" type="text" placeholder="Mesaj yazın..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
                     <button onclick="sendChatMessage()" class="cyber-btn px-4 py-2 rounded-xl text-xs font-bold text-white">Gönder</button>
                 </div>
             </div>
         </div>
 
-        <!-- ================= TAB 4: PARTNER & CÜZDAN (PARTNER DASHBOARD) ================= -->
+        <!-- ================= TAB 4: PARTNER & CÜZDAN ================= -->
         <div id="tab-partner" class="tab-content">
-            <!-- Cüzdan Eşleme Kartı -->
             <div class="cyber-card p-4 space-y-3">
                 <div class="text-xs font-bold text-amber-400 flex items-center gap-2">
                     <span>💎</span> <span data-i18n="vaultTitle">Continuum On-Chain Vault</span>
                 </div>
-                <p class="text-xs text-slate-300" data-i18n="vaultDesc">Cüzdanını eşle, Base Sepolia L2 üzerindeki gerçek $CTM bakiyeni gör.</p>
                 <input id="walletInput" type="text" placeholder="0x... Cüzdan Adresiniz" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 font-mono">
-                <button onclick="saveWalletAddress()" class="w-full cyber-btn text-white font-bold py-2.5 rounded-xl text-xs" data-i18n="btnSaveWallet">
-                    Cüzdanı Eşle & Kaydet
-                </button>
+                <button onclick="saveWalletAddress()" class="w-full cyber-btn text-white font-bold py-2.5 rounded-xl text-xs" data-i18n="btnSaveWallet">Cüzdanı Eşle & Kaydet</button>
             </div>
 
-            <!-- İş Ortağı (Partner) Paneli -->
+            <!-- İş Ortağı Paneli -->
             <div id="partnerDashboardCard" class="cyber-card p-4 space-y-3 border-indigo-500/40 hidden">
                 <div class="text-xs font-bold text-indigo-400 flex items-center justify-between">
                     <span>🤝 <span data-i18n="partnerTitle">İş Ortağı & Klan Paneli</span></span>
                     <span id="partnerClanName" class="text-[10px] bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">Clan</span>
                 </div>
+                
+                <!-- ÖZEL DAVET LİNKİ PAYLAŞIM ALANI -->
+                <div class="p-2.5 bg-slate-950/80 rounded-xl border border-indigo-500/30 space-y-1">
+                    <div class="text-[10px] text-indigo-300 font-bold" data-i18n="inviteTitle">🔗 Klan Davet Linkiniz:</div>
+                    <div class="flex gap-1">
+                        <input id="inviteLinkInput" type="text" readonly class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-[10px] text-cyan-400 font-mono">
+                        <button onclick="copyInviteLink()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] px-3 py-1 rounded-lg font-bold" data-i18n="btnCopy">Kopyala</button>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-2 text-center">
                     <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
                         <div class="text-[10px] text-slate-400" data-i18n="pMembers">Klan Üyesi</div>
                         <div id="partnerMembersCount" class="text-sm font-bold text-cyan-400">0</div>
                     </div>
                     <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-                        <div class="text-[10px] text-slate-400" data-i18n="pAds">Toplam İzlenen Reklam</div>
+                        <div class="text-[10px] text-slate-400" data-i18n="pAds">Reklamlar</div>
                         <div id="partnerTotalAds" class="text-sm font-bold text-purple-400">0</div>
                     </div>
                 </div>
@@ -170,33 +155,30 @@
                     <div id="partnerShareDisplay" class="text-base font-black text-emerald-400">0.00 USDT</div>
                     <div class="text-[9px] text-amber-400" data-i18n="pLimitNote">⚠️ Minimum Ödeme Eşiği: 100 USDT</div>
                 </div>
-                <button onclick="requestPartnerPayout()" id="payoutBtn" class="w-full bg-slate-800 text-slate-500 font-bold py-2.5 rounded-xl text-xs cursor-not-allowed" disabled data-i18n="btnPayout">
-                    Ödeme Talep Et (100 USDT Bekleniyor)
-                </button>
+                <button onclick="requestPartnerPayout()" id="payoutBtn" class="w-full bg-slate-800 text-slate-500 font-bold py-2.5 rounded-xl text-xs cursor-not-allowed" disabled data-i18n="btnPayout">Ödeme Talep Et</button>
+            </div>
+
+            <!-- ⚡ SÜPER ADMIN PANELİ (Sadece Sana Görünür: suvarialgo) -->
+            <div id="adminPanelCard" class="cyber-card p-4 space-y-3 border-amber-500/50 hidden">
+                <div class="text-xs font-bold text-amber-400">👑 Süper Admin & Klan Oluşturucu</div>
+                <div class="space-y-2">
+                    <input id="adminClanName" type="text" placeholder="Klan Adı (Örn: CryptoTurk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                    <input id="adminClanId" type="text" placeholder="Klan ID (Örn: clan_cryptoturk)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                    <input id="adminPartnerUsername" type="text" placeholder="Partner Telegram Kullanıcı Adı (Örn: ahmet)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                    <button onclick="createClanByAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs">Yeni Klan / Partner Ekle</button>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- BOTTOM NAVIGATION BAR -->
+    <!-- BOTTOM NAVIGATION -->
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-lg border-t border-purple-500/30 z-50 py-2 px-4">
         <div class="max-w-md mx-auto flex justify-around items-center">
-            <button onclick="switchTab('base')" id="nav-base" class="flex flex-col items-center text-cyan-400 transition">
-                <span class="text-base">🏭</span>
-                <span class="text-[10px] font-bold mt-0.5" data-i18n="navBase">Üssüm</span>
-            </button>
-            <button onclick="switchTab('wars')" id="nav-wars" class="flex flex-col items-center text-slate-400 hover:text-slate-200 transition">
-                <span class="text-base">⚔️</span>
-                <span class="text-[10px] font-bold mt-0.5" data-i18n="navWars">Siber Savaş</span>
-            </button>
-            <button onclick="switchTab('chat')" id="nav-chat" class="flex flex-col items-center text-slate-400 hover:text-slate-200 transition">
-                <span class="text-base">💬</span>
-                <span class="text-[10px] font-bold mt-0.5" data-i18n="navChat">Chat</span>
-            </button>
-            <button onclick="switchTab('partner')" id="nav-partner" class="flex flex-col items-center text-slate-400 hover:text-slate-200 transition">
-                <span class="text-base">🤝</span>
-                <span class="text-[10px] font-bold mt-0.5" data-i18n="navPartner">Partner & Cüzdan</span>
-            </button>
+            <button onclick="switchTab('base')" id="nav-base" class="flex flex-col items-center text-cyan-400 transition"><span class="text-base">🏭</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navBase">Üssüm</span></button>
+            <button onclick="switchTab('wars')" id="nav-wars" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">⚔️</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navWars">Siber Savaş</span></button>
+            <button onclick="switchTab('chat')" id="nav-chat" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">💬</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navChat">Chat</span></button>
+            <button onclick="switchTab('partner')" id="nav-partner" class="flex flex-col items-center text-slate-400 transition"><span class="text-base">🤝</span><span class="text-[10px] font-bold mt-0.5" data-i18n="navPartner">Partner & Cüzdan</span></button>
         </div>
     </nav>
 
@@ -208,38 +190,34 @@
 
         const tgUser = tg?.initDataUnsafe?.user;
         const userId = tgUser?.id ? String(tgUser.id) : "cyber_guest_99";
-        const username = tgUser?.username || tgUser?.first_name || "CyberCommander";
+        const username = tgUser?.username || tgUser?.first_name || "suvarialgo"; // Test için varsayılan admin
         
         let currentLang = tgUser?.language_code === 'en' ? 'en' : 'tr';
         let activeChatChannel = "global";
-        let partnerEligible = false;
 
-        // --- İ18N DİL SÖZLÜĞÜ ---
         const i18n = {
             tr: {
                 seqCenter: "L2 SEQUENCER KOMUTA MERKEZİ",
-                seqDesc: "Blok işleme gücünü artır, saniyede daha fazla $CTM tabanlı kaynak üret ve üssünü güçlendir.",
-                btnSeq: "🚀 Sequencer Yükselt (500 PTS)",
-                btnPay: "⛽ Paymaster Kasa (500 PTS)",
-                boostTitle: "Stratejik Reklam Hızlandırıcıları (Adsgram Boost)",
-                boostDesc: "Üssünü saldırılardan korumak veya anında kaynak takviyesi almak için siber reklam protokolünü çalıştır:",
-                btnShield: "🛡️ 2 Saatlik Siber Kalkan",
-                btnFaucet: "💎 Reklam ile +2.5 $CTM Faucet",
+                seqDesc: "Blok işleme gücünü artır, saniyede daha fazla kaynak üret.",
+                btnSeq: "🚀 Sequencer (500 PTS)",
+                btnPay: "⛽ Paymaster (500 PTS)",
+                boostTitle: "Stratejik Reklam Hızlandırıcıları (Adsgram)",
+                btnShield: "🛡️ 2 Saat Kalkan",
+                btnFaucet: "💎 +2.5 $CTM Faucet",
                 warsTitle: "⚔️ L2 NODE RAIDS & HACKING",
-                warsDesc: "Rakip düğümlere (Node) siber saldırı düzenleyerek işlenmemiş blokları ele geçir ve liderlik tablosunda tırman!",
-                targetNode: "🎯 Hedef: Sector-7 Validator Node",
-                targetInfo: "Savunma Gücü: Normal | Ödül: +400 Puan",
-                btnRaid: "⚡ Siber Saldırı Başlat (Raid)",
+                warsDesc: "Rakip düğümlere siber saldırı düzenle!",
+                btnRaid: "⚡ Siber Saldırı Başlat",
                 chatHeader: "💬 Siber Terminal Sohbet",
                 vaultTitle: "Continuum On-Chain Vault",
-                vaultDesc: "Cüzdanını eşle, Base Sepolia L2 üzerindeki gerçek $CTM bakiyeni gör.",
                 btnSaveWallet: "Cüzdanı Eşle & Kaydet",
                 partnerTitle: "İş Ortağı & Klan Paneli",
+                inviteTitle: "🔗 Klan Davet Linkiniz:",
+                btnCopy: "Kopyala",
                 pMembers: "Klan Üyesi",
-                pAds: "Toplam İzlenen Reklam",
+                pAds: "Reklamlar",
                 pShare: "Tahmini %25 Hakediş Payınız",
                 pLimitNote: "⚠️ Minimum Ödeme Eşiği: 100 USDT",
-                btnPayout: "Ödeme Talep Et (100 USDT Bekleniyor)",
+                btnPayout: "Ödeme Talep Et",
                 navBase: "Üssüm",
                 navWars: "Siber Savaş",
                 navChat: "Chat",
@@ -247,28 +225,26 @@
             },
             en: {
                 seqCenter: "L2 SEQUENCER COMMAND CENTER",
-                seqDesc: "Boost block processing power and generate more $CTM-based resources.",
-                btnSeq: "🚀 Upgrade Sequencer (500 PTS)",
-                btnPay: "⛽ Paymaster Vault (500 PTS)",
+                seqDesc: "Boost block processing power.",
+                btnSeq: "🚀 Sequencer (500 PTS)",
+                btnPay: "⛽ Paymaster (500 PTS)",
                 boostTitle: "Strategic Ad Boosters (Adsgram)",
-                boostDesc: "Run cyber-ad protocols to protect your base or gain instant resources:",
-                btnShield: "🛡️ 2H Cyber Shield",
-                btnFaucet: "💎 +2.5 $CTM Faucet Ad",
+                btnShield: "🛡️ 2H Shield",
+                btnFaucet: "💎 +2.5 $CTM Faucet",
                 warsTitle: "⚔️ L2 NODE RAIDS & HACKING",
-                warsDesc: "Cyber-attack rival validator nodes to seize raw blocks and climb the leaderboard!",
-                targetNode: "🎯 Target: Sector-7 Validator Node",
-                targetInfo: "Defense: Normal | Reward: +400 PTS",
-                btnRaid: "⚡ Launch Cyber Raid",
+                warsDesc: "Cyber-attack rival nodes!",
+                btnRaid: "⚡ Launch Raid",
                 chatHeader: "💬 Cyber Terminal Chat",
                 vaultTitle: "Continuum On-Chain Vault",
-                vaultDesc: "Link your wallet to view your real $CTM balance on Base Sepolia L2.",
                 btnSaveWallet: "Link & Save Wallet",
                 partnerTitle: "Partner & Clan Dashboard",
-                pMembers: "Clan Members",
-                pAds: "Total Ads Watched",
+                inviteTitle: "🔗 Clan Invite Link:",
+                btnCopy: "Copy",
+                pMembers: "Members",
+                pAds: "Ads",
                 pShare: "Estimated 25% Revenue Share",
-                pLimitNote: "⚠️ Minimum Payout Threshold: 100 USDT",
-                btnPayout: "Request Payout (Waiting 100 USDT)",
+                pLimitNote: "⚠️ Minimum Payout: 100 USDT",
+                btnPayout: "Request Payout",
                 navBase: "Base",
                 navWars: "Wars",
                 navChat: "Chat",
@@ -280,9 +256,7 @@
             document.getElementById('langToggleBtn').innerText = currentLang.toUpperCase();
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18n[currentLang][key]) {
-                    el.innerText = i18n[currentLang][key];
-                }
+                if (i18n[currentLang][key]) el.innerText = i18n[currentLang][key];
             });
         }
 
@@ -297,7 +271,12 @@
             loadCommanderInfo();
             loadPartnerStats();
             loadChatMessages();
-            setInterval(loadChatMessages, 5000); // 5 saniyede bir chat güncellenir
+            setInterval(loadChatMessages, 5000);
+            
+            // Eğer admin seninsen admin panelini aç
+            if (username.toLowerCase() === "suvarialgo") {
+                document.getElementById('adminPanelCard').classList.remove('hidden');
+            }
         });
 
         function switchTab(tabName) {
@@ -326,10 +305,9 @@
                         document.getElementById('walletInput').value = cmd.wallet_address;
                     }
                 }
-            } catch (e) { console.error("Komutan bilgisi yüklenemedi", e); }
+            } catch (e) { console.error(e); }
         }
 
-        // --- PARTNER & KLAN İSTATİSTİKLERİ ---
         async function loadPartnerStats() {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/partner-stats?partner_username=${username}`);
@@ -340,29 +318,58 @@
                     document.getElementById('partnerMembersCount').innerText = data.member_count;
                     document.getElementById('partnerTotalAds').innerText = data.total_ads;
                     document.getElementById('partnerShareDisplay').innerText = `${data.partner_share} USDT`;
+                    document.getElementById('inviteLinkInput').value = data.invite_link;
                     
-                    partnerEligible = data.payout_eligible;
                     const payoutBtn = document.getElementById('payoutBtn');
-                    if (partnerEligible) {
+                    if (data.payout_eligible) {
                         payoutBtn.className = "w-full cyber-btn text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer";
                         payoutBtn.removeAttribute('disabled');
-                        payoutBtn.innerText = currentLang === 'tr' ? "💰 Ödeme Talep Et (100 USDT Aşıldı)" : "💰 Request Payout (Threshold Met)";
+                        payoutBtn.innerText = currentLang === 'tr' ? "💰 Ödeme Talep Et (100 USDT Aşıldı)" : "💰 Request Payout";
                     } else {
                         payoutBtn.className = "w-full bg-slate-800 text-slate-500 font-bold py-2.5 rounded-xl text-xs cursor-not-allowed";
                         payoutBtn.setAttribute('disabled', 'true');
-                        payoutBtn.innerText = currentLang === 'tr' ? "Ödeme Talep Et (100 USDT Bekleniyor)" : "Request Payout (Waiting 100 USDT)";
+                        payoutBtn.innerText = currentLang === 'tr' ? "Ödeme Talep Et (100 USDT Bekleniyor)" : "Waiting 100 USDT";
                     }
                 }
-            } catch (e) {
-                // Eğer bu kullanıcı partner değilse panel gizli kalır
-                console.log("Kullanıcı partner değil veya yetkisi yok.");
+            } catch (e) { console.log("Partner yetkisi yok."); }
+        }
+
+        function copyInviteLink() {
+            const input = document.getElementById('inviteLinkInput');
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value);
+            alert(currentLang === 'tr' ? "✅ Klan davet linki kopyalandı!" : "✅ Invite link copied!");
+        }
+
+        async function createClanByAdmin() {
+            const clanName = document.getElementById('adminClanName').value.trim();
+            const clanId = document.getElementById('adminClanId').value.trim();
+            const partnerUser = document.getElementById('adminPartnerUsername').value.trim();
+            
+            if (!clanName || !clanId || !partnerUser) {
+                alert("Tüm alanları doldurun!");
+                return;
             }
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/admin/create-clan`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ admin_username: username, partner_username: partnerUser, clan_name: clanName, clan_id: clanId })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(data.message);
+                    loadPartnerStats();
+                } else { alert(`⚠️ ${data.detail}`); }
+            } catch (e) { alert("Klan oluşturma hatası"); }
         }
 
         async function requestPartnerPayout() {
             const addr = document.getElementById('walletInput').value.trim();
             if (!addr) {
-                alert(currentLang === 'tr' ? "⚠️ Önce cüzdan adresinizi eşlemelisiniz!" : "⚠️ Please link your wallet first!");
+                alert("⚠️ Önce cüzdan adresinizi eşlemelisiniz!");
                 return;
             }
             try {
@@ -372,15 +379,11 @@
                     body: JSON.stringify({ partner_username: username, clan_id: "clan_teknohaber", wallet_address: addr, amount: 100 })
                 });
                 const data = await res.json();
-                if (res.ok) {
-                    alert(data.message);
-                } else {
-                    alert(`⚠️ ${data.detail}`);
-                }
+                if (res.ok) alert(data.message);
+                else alert(`⚠️ ${data.detail}`);
             } catch (e) { alert("Talep hatası"); }
         }
 
-        // --- CHAT SİSTEMİ ---
         function switchChatChannel(chan) {
             activeChatChannel = chan;
             document.getElementById('btnChatGlobal').className = chan === 'global' ? "bg-indigo-600 px-2.5 py-1 rounded-lg text-white font-bold" : "bg-slate-800 px-2.5 py-1 rounded-lg text-slate-400 font-bold";
@@ -397,7 +400,7 @@
                     box.innerHTML = data.chats.map(m => `<div><b class="text-cyan-400">@${m.sender_name}:</b> <span class="text-slate-200">${m.message}</span></div>`).join('');
                     box.scrollTop = box.scrollHeight;
                 }
-            } catch (e) { console.error("Chat yüklenemedi", e); }
+            } catch (e) { console.error(e); }
         }
 
         async function sendChatMessage() {
@@ -410,14 +413,10 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ user_id: userId, sender_name: username, message: msg, channel: activeChatChannel })
                 });
-                if (res.ok) {
-                    input.value = "";
-                    loadChatMessages();
-                }
+                if (res.ok) { input.value = ""; loadChatMessages(); }
             } catch (e) { alert("Mesaj gönderilemedi"); }
         }
 
-        // --- UPGRADE & ADS ---
         async function upgradeNode(type) {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/upgrade-node`, {
