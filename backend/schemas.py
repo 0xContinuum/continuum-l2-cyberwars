@@ -41,3 +41,9 @@ class PayoutClaimRequest(BaseModel):
     clan_id: str
     wallet_address: str
     amount: float
+
+class CreateClanRequest(BaseModel):
+    admin_username: str
+    partner_username: str
+    clan_name: str
+    clan_id: str
