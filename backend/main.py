@@ -11,10 +11,10 @@ from web3 import Web3
 from backend.models import CommanderProfile
 from backend.schemas import (
     NodeUpgradeRequest, AdsgramRewardRequest, WalletRegisterRequest,
-    SendMessageRequest, PayoutClaimRequest
+    SendMessageRequest, PayoutClaimRequest, CreateClanRequest
 )
 
-app = FastAPI(title="Continuum: L2 Cyber Wars API", version="2.0.0")
+app = FastAPI(title="Continuum: L2 Cyber Wars API", version="2.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,7 +28,7 @@ DB_FILE = "cyberwars_database.json"
 BASE_SEPOLIA_RPC = "https://sepolia.base.org"
 w3 = Web3(Web3.HTTPProvider(BASE_SEPOLIA_RPC))
 
-# --- KEEP-ALIVE PING MEKANİZMASI (Render Uyumasın) ---
+# --- KEEP-ALIVE PING MEKANİZMASI ---
 def self_ping():
     while True:
         try:
@@ -36,7 +36,7 @@ def self_ping():
             requests.get(url, timeout=10)
         except Exception:
             pass
-        time.sleep(840)  # Her 14 dakikada bir ping atar
+        time.sleep(840)
 
 threading.Thread(target=self_ping, daemon=True).start()
 
@@ -101,7 +101,6 @@ def get_commander(user_id: str, clan_code: Optional[str] = None):
 def upgrade_node(req: NodeUpgradeRequest):
     db = load_db()
     commanders = db.get("commanders", {})
-    
     if req.user_id not in commanders:
         raise HTTPException(status_code=404, detail="Komutan bulunamadı.")
     
@@ -149,11 +148,10 @@ def claim_adsgram_reward(req: AdsgramRewardRequest):
     
     cmd["ads_watched_today"] += 1
     
-    # Clan / Partner Gelir Havuzuna Katkı
     c_id = cmd.get("clan_id")
     if c_id and c_id in clans:
         clans[c_id]["total_ads"] += 1
-        clans[c_id]["revenue_pool"] += 0.12  # Her reklam başına tahmini gelir (USDT)
+        clans[c_id]["revenue_pool"] += 0.12
         
     save_db(db)
     return {"success": True, "message": msg, "commander": cmd}
@@ -162,21 +160,17 @@ def claim_adsgram_reward(req: AdsgramRewardRequest):
 def register_wallet(data: WalletRegisterRequest):
     if not data.wallet_address or not Web3.is_address(data.wallet_address):
         raise HTTPException(status_code=400, detail="Geçersiz cüzdan adresi.")
-    
     db = load_db()
     commanders = db.setdefault("commanders", {})
-    
     user_id = str(data.user_id)
     if user_id not in commanders:
         commanders[user_id] = CommanderProfile(user_id=user_id, username=data.username).dict()
-    
     commanders[user_id]["wallet_address"] = Web3.to_checksum_address(data.wallet_address)
     commanders[user_id]["username"] = data.username
     save_db(db)
-    
     return {"success": True, "message": "Cüzdan başarıyla eşlendi."}
 
-# --- CHAT SİSTEMİ ENDPOINTLERİ ---
+# --- CHAT ENDPOINTLERİ ---
 @app.get("/api/get-chats")
 def get_chats(channel: str = "global"):
     db = load_db()
@@ -200,7 +194,7 @@ def send_message(req: SendMessageRequest):
     save_db(db)
     return {"success": True}
 
-# --- PARTNER DASHBOARD VE 100 USDT LİMİTLİ PAYOUT ---
+# --- PARTNER & ADMIN YÖNETİMİ ---
 @app.get("/api/partner-stats")
 def get_partner_stats(partner_username: str):
     db = load_db()
@@ -209,7 +203,7 @@ def get_partner_stats(partner_username: str):
     target_clan = None
     target_clan_id = None
     for c_id, c_data in clans.items():
-        if c_data["partner_username"] == partner_username:
+        if c_data["partner_username"].lower() == partner_username.lower():
             target_clan = c_data
             target_clan_id = c_id
             break
@@ -218,7 +212,7 @@ def get_partner_stats(partner_username: str):
         raise HTTPException(status_code=403, detail="Yetkisiz partner hesabı.")
         
     total_revenue = target_clan["revenue_pool"]
-    partner_share = total_revenue * 0.25  # %25 Ortaklık Payı
+    partner_share = total_revenue * 0.25
     member_count = sum(1 for cmd in db.get("commanders", {}).values() if cmd.get("clan_id") == target_clan_id)
     
     return {
@@ -229,16 +223,34 @@ def get_partner_stats(partner_username: str):
         "total_ads": target_clan["total_ads"],
         "total_revenue": round(total_revenue, 2),
         "partner_share": round(partner_share, 2),
-        "payout_eligible": partner_share >= 100.0  # 100 USDT minimum sınır kuralı
+        "payout_eligible": partner_share >= 100.0,
+        "invite_link": f"https://t.me/ContinuumCyberWars_bot?start={target_clan_id}"
     }
+
+@app.post("/api/admin/create-clan")
+def create_clan(req: CreateClanRequest):
+    # Sadece senin kullanıcı adın admin yetkisine sahip olur
+    if req.admin_username.lower() != "suvarialgo":
+        raise HTTPException(status_code=403, detail="Yetkisiz admin denemesi!")
+    
+    db = load_db()
+    clans = db.setdefault("clans", {})
+    
+    clans[req.clan_id] = {
+        "name": req.clan_name,
+        "partner_username": req.partner_username.replace("@", ""),
+        "total_ads": 0,
+        "revenue_pool": 0.0
+    }
+    save_db(db)
+    return {"success": True, "message": f"Klan başarıyla oluşturuldu: {req.clan_name}"}
 
 @app.post("/api/request-payout")
 def request_payout(req: PayoutClaimRequest):
     db = load_db()
     clans = db.get("clans", {})
     clan = clans.get(req.clan_id)
-    
-    if not clan or clan["partner_username"] != req.partner_username:
+    if not clan or clan["partner_username"].lower() != req.partner_username.lower():
         raise HTTPException(status_code=400, detail="Geçersiz clan veya partner.")
         
     share = clan["revenue_pool"] * 0.25
